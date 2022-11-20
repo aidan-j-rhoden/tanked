@@ -40,6 +40,7 @@ func _setup_game_modes() -> void:
 	add_game_mode("COOP_BATTLE")
 	add_game_mode("CAMPAIGN")
 	add_game_mode("QUICK_MATCH")
+	add_game_mode("MULTIPLAYER")
 
 func _setup_level_array() -> void:
 	levels.append(Level_1)
