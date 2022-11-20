@@ -4,7 +4,7 @@ var speed: int = 250
 export (int) var damage = 5
 var velocity: Vector2 = Vector2()
 var explosion_scene: PackedScene = load("res://scenes/explosion.tscn")
-var explosion: AnimationPlayer
+var explosion#: AnimationPlayer
 onready var audio_explosion: AudioStreamPlayer = $AudioExplosion
 
 func _ready():
