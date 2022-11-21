@@ -50,12 +50,12 @@ margin_bottom = 80.0
 [node name="TitleLabel" type="Label" parent="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Title"]
 margin_right = 528.0
 margin_bottom = 80.0
-custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0.45098, 0.509804, 0.360784, 1 )
 custom_colors/font_color_shadow = Color( 0.266667, 0.266667, 0.160784, 1 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 custom_constants/shadow_as_outline = 1
+custom_fonts/font = ExtResource( 4 )
 text = "MATCH OPTIONS"
 align = 1
 
@@ -146,6 +146,7 @@ margin_right = 768.0
 margin_bottom = 432.0
 texture = ExtResource( 5 )
 stretch_mode = 6
+
 [connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/EnemiesButton" to="." method="_on_EnemiesButton_focus_entered"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/EnemiesButton" to="." method="_on_EnemiesButton_pressed"]
 [connection signal="focus_entered" from="VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/DifficultyButton" to="." method="_on_DifficultyButton_focus_entered"]
