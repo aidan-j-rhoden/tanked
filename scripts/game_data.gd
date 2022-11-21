@@ -69,6 +69,12 @@ func set_no_of_enemies(enemy_no):
 		if no_of_enemies > 2:
 			no_of_enemies = 1
 
+func set_no_of_players(player_no):
+	no_of_players = player_no
+	if no_of_players > 4:
+		no_of_players = 2
+	set_no_of_enemies(4 - no_of_players)
+
 func set_difficulty(difficulty):
 	difficulty_level = difficulty
 	if difficulty_level >= difficulty_levels.size():

@@ -11,10 +11,7 @@ func _ready():
 
 # Button Actions
 func _on_EnemiesButton_pressed():
-	if game_data.game_mode == game_data.game_modes.MULTIPLAYER:
-		game_data.set_no_of_enemies(game_data.no_of_enemies + 1)
-	else:
-		game_data.set_no_of_enemies(game_data.no_of_enemies + 1)
+	game_data.set_no_of_enemies(game_data.no_of_enemies + 1)
 	enemies_button.set_text("ENEMIES: %d" % game_data.no_of_enemies)
 	audio_player.move.play()
 
