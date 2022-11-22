@@ -17,12 +17,13 @@ var target: PackedScene = load("res://scenes/target.tscn")
 var bullet: PackedScene = load("res://scenes/bullet.tscn")
 var health_bar: PackedScene = load("res://scenes/health_bar.tscn")
 
-
 var current_level: Node2D
 var cpu_tanks: Array = []
 var player_tanks: Array = []
 var dead_tanks = 0
-var ending = false
+var round_end: bool = false
+var ending: bool = false
+
 
 func _ready():
 	setup_level()
@@ -43,7 +44,7 @@ func setup_tanks() -> void:
 	var plr_id = 1
 	player_tanks = []
 	cpu_tanks = []
-	
+
 	for i in range(0, game_data.no_of_players):
 		var player = game_data.PlayerTank.instance()
 		player.my_id = plr_id
@@ -53,7 +54,7 @@ func setup_tanks() -> void:
 		player_tanks.append(player)
 		add_child(player)
 		plr_id += 1
-		
+
 	for i in range (0, game_data.no_of_enemies):
 		var enemy = game_data.CpuTank.instance()
 		enemy.is_cpu = true
@@ -68,6 +69,7 @@ func setup_tanks() -> void:
 		add_child(enemy)
 		plr_id += 1
 
+
 func _process(delta):
 	if is_chroma_on:
 		ramp_up_chroma(delta)
@@ -79,17 +81,23 @@ func _process(delta):
 			dead_tanks += 1
 	if dead_tanks >= game_data.no_of_players - 1 and not ending:
 		if dead_tanks == game_data.no_of_players:
-			ending = true #used so this doesn't run multiple times
-			scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
+			round_end = true #used so this doesn't run multiple times
 		else:
 			dead_tanks = 0
 			for tank in cpu_tanks:
 				if not tank.check_if_alive():
 					dead_tanks += 1
 			if dead_tanks == game_data.no_of_enemies:
-				ending = true #used so this doesn't run multiple times
-				scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
+				round_end = true #used so this doesn't run multiple times
 	dead_tanks = 0
+	if not ending and round_end:
+		ending = true
+		if game_data.game_mode != game_data.game_modes.CAMPAIGN:
+			scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
+		#else:
+		#	game_data.current_level += 1
+		#	setup_level()
+
 
 func _on_Timer_timeout() -> void:
 	for tank in cpu_tanks:
@@ -98,6 +106,7 @@ func _on_Timer_timeout() -> void:
 
 	if debug:
 		draw_tracks()
+
 
 func check_distance_to_players(cpu_position) -> Vector2:
 	var selected = 0
@@ -108,6 +117,7 @@ func check_distance_to_players(cpu_position) -> Vector2:
 			shortest = cpu_position.distance_to(player_tanks[i].position)
 	return player_tanks[selected]
 
+
 func ramp_up_chroma(delta) -> void:
 	var value = shader.material.get_shader_param("amount")
 	value = value * (1 - delta) + 0.4 * delta * 2
@@ -115,10 +125,12 @@ func ramp_up_chroma(delta) -> void:
 	if value > 0.39:
 		is_chroma_on = false
 
+
 func ramp_down_chroma(delta) -> void:
 	var value = shader.material.get_shader_param("amount")
 	value = value * (1 - delta) + 0 * delta * 4
 	shader.material.set_shader_param("amount", value)
+
 
 func draw_tracks() -> void:
 	# Clear previous tracks
@@ -140,10 +152,12 @@ func _on_chroma_update_timer_timeout() -> void:
 	if rng.randf_range(0,10) < 2:
 		is_chroma_on = true
 
+
 func on_bullet_shot(bullet_position, bullet_direction) -> void:
 	var b = bullet.instance()
 	bullet_container.add_child(b)
 	b.start(bullet_position, bullet_direction)
+
 
 #func quit_game():
 

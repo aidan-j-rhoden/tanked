@@ -15,9 +15,7 @@ p2_start_rotation = -90.0
 p3_start_rotation = 180.0
 p4_start_rotation = 90.0
 
-[node name="NavigationTiles" type="TileMap" parent="." groups=[
-"wall",
-]]
+[node name="NavigationTiles" type="TileMap" parent="." groups=["wall"]]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
 collision_friction = 0.0

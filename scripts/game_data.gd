@@ -3,10 +3,10 @@ extends Node
 enum single_game_mode_list { CAMPAIGN, SINGLE_BATTLE }
 
 # Preload level scenes
-var Level_1: String = "res://levels/level_01.tscn"
-var Level_2: String = "res://levels/level_02.tscn"
-var Level_3: String = "res://levels/level_2.tscn"
-var Level_4: String = "res://levels/level_1.tscn"
+var Level_1: String = "res://levels/level_1.tscn"
+var Level_2: String = "res://levels/level_2.tscn"
+var Level_3: String = "res://levels/level_3.tscn"
+var Level_4: String = "res://levels/level_4.tscn"
 var Level_5: String = "res://levels/level_01_blank.tscn"
 var levels: Array = []
 
@@ -28,7 +28,7 @@ var CpuTank: PackedScene = preload("res://scenes/cpu_tank.tscn")
 var tanks: Array = []
 
 # Level info
-var current_level: int = 2
+var current_level: int = 1
 
 func _ready():
 	_setup_level_array()
