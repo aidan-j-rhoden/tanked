@@ -22,7 +22,10 @@ func _on_DifficultyButton_pressed():
 
 func _on_ContinueButton_pressed():
 	audio_player.move.play()
-	scene_changer.change_scene("res://screens/game_screen.tscn", 0, true)
+	if game_data.game_mode == game_data.game_modes.CAMPAIGN:
+		scene_changer.change_scene("res://screens/game_screen.tscn", 0, true)
+	elif game_data.game_mode == game_data.game_modes.QUICK_MATCH:
+		scene_changer.change_scene("res://screens/game_screen.tscn", 0, true)
 
 func _on_BackButton_pressed():
 	audio_player.move_scene.play()

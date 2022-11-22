@@ -10,6 +10,7 @@ func _ready():
 func _on_CampaignButton_pressed():
 	audio_player.move.play()
 	game_data.game_mode = game_data.game_modes.CAMPAIGN
+	scene_changer.change_scene("res://screens/match_options_screen.tscn", 0, false)
 
 func _on_QuickMatchButton_pressed():
 	audio_player.move_scene.play()

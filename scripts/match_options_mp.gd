@@ -12,6 +12,7 @@ func _ready():
 # Button Actions
 func _on_PlayersButton_pressed():
 	game_data.set_no_of_players(game_data.no_of_players + 1)
+	game_data.set_no_of_enemies(4 - game_data.no_of_players)
 	players_button.set_text("PLAYERS: %d" % game_data.no_of_players)
 	audio_player.move.play()
 

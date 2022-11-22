@@ -1,6 +1,6 @@
 extends Node2D
 
-export (bool) var debug = false
+export (bool) var debug = true
 var is_chroma_on = true
 
 export (float) var search_interval = 0.5
@@ -75,9 +75,18 @@ func _process(delta):
 	for tank in player_tanks:
 		if not tank.check_if_alive() and not ending:
 			dead_tanks += 1
-	if dead_tanks > game_data.no_of_players - 1 and not ending:
-		ending = true #used so this doesn't run multiple times
-		scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
+	if dead_tanks >= game_data.no_of_players - 1 and not ending:
+		if dead_tanks == game_data.no_of_players:
+			ending = true #used so this doesn't run multiple times
+			scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
+		else:
+			dead_tanks = 0
+			for tank in cpu_tanks:
+				if not tank.check_if_alive():
+					dead_tanks += 1
+			if dead_tanks == game_data.no_of_enemies:
+				ending = true #used so this doesn't run multiple times
+				scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
 	dead_tanks = 0
 
 func _on_Timer_timeout() -> void:

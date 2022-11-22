@@ -62,12 +62,8 @@ func add_game_mode(mode_name) -> void:
 
 func set_no_of_enemies(enemy_no):
 	no_of_enemies = enemy_no
-	if game_data.game_mode != game_data.game_modes.MULTIPLAYER:
-		if no_of_enemies > 3:
-			no_of_enemies = 1
-	else:
-		if no_of_enemies > 2:
-			no_of_enemies = 1
+	if no_of_enemies > 3:
+		no_of_enemies = 1
 
 func set_no_of_players(player_no):
 	no_of_players = player_no
