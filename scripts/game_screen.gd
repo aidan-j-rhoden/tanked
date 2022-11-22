@@ -21,6 +21,8 @@ var health_bar: PackedScene = load("res://scenes/health_bar.tscn")
 var current_level: Node2D
 var cpu_tanks: Array = []
 var player_tanks: Array = []
+var dead_tanks = 0
+var ending = false
 
 func _ready():
 	setup_level()
@@ -70,6 +72,14 @@ func _process(delta):
 	else:
 		ramp_down_chroma(delta)
 
+	for tank in player_tanks:
+		if not tank.check_if_alive() and not ending:
+			dead_tanks += 1
+	if dead_tanks > game_data.no_of_players - 1 and not ending:
+		ending = true #used so this doesn't run multiple times
+		scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
+	dead_tanks = 0
+
 func _on_Timer_timeout() -> void:
 	for tank in cpu_tanks:
 		var new_target = check_distance_to_players(tank.position)
@@ -112,6 +122,7 @@ func draw_tracks() -> void:
 				var trgt = target.instance()
 				trgt.position = tank.path[i]
 				target_container.add_child(trgt)
+
 
 # TODO: Flash Chroma when player is hit.
 func _on_chroma_update_timer_timeout() -> void:
