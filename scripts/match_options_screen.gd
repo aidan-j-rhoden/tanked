@@ -6,13 +6,21 @@ onready var difficulty_button: Button = get_node("VBoxContainer/CenterContainer/
 func _ready():
 	enemies_button.grab_focus()
 	difficulty_button.set_text("DIFFICULTY: %s" % game_data.difficulty_levels[game_data.difficulty_level])
-	enemies_button.set_text("ENEMIES: %d" % game_data.no_of_enemies)
+	if game_data.game_mode != game_data.game_modes.MULTIPLAYER:
+		enemies_button.set_text("ENEMIES: %d" % game_data.no_of_enemies)
+	else:
+		enemies_button.set_text("PLAYERS: %d" % game_data.no_of_players)
 	audio_player.move.stop()
 
 # Button Actions
 func _on_EnemiesButton_pressed():
-	game_data.set_no_of_enemies(game_data.no_of_enemies + 1)
-	enemies_button.set_text("ENEMIES: %d" % game_data.no_of_enemies)
+	if game_data.game_mode != game_data.game_modes.MULTIPLAYER:
+		game_data.set_no_of_enemies(game_data.no_of_enemies + 1)
+		enemies_button.set_text("ENEMIES: %d" % game_data.no_of_enemies)
+	else:
+		game_data.set_no_of_players(game_data.no_of_players + 1)
+		game_data.set_no_of_enemies(4 - game_data.no_of_players)
+		enemies_button.set_text("PLAYERS: %d" % game_data.no_of_players)
 	audio_player.move.play()
 
 func _on_DifficultyButton_pressed():
@@ -24,7 +32,7 @@ func _on_ContinueButton_pressed():
 	audio_player.move.play()
 	if game_data.game_mode == game_data.game_modes.CAMPAIGN:
 		scene_changer.change_scene("res://screens/game_screen.tscn", 0, true)
-	elif game_data.game_mode == game_data.game_modes.QUICK_MATCH:
+	else:
 		scene_changer.change_scene("res://screens/game_screen.tscn", 0, true)
 
 func _on_BackButton_pressed():

@@ -1,6 +1,6 @@
 extends Node2D
 
-export (bool) var debug = true
+export (bool) var debug = false
 var is_chroma_on = true
 
 export (float) var search_interval = 0.5
@@ -32,17 +32,19 @@ func _ready():
 	path_update_timer.start()
 	get_tree().paused = false
 
+
 func setup_level() -> void:
 	var level = load(game_data.levels[game_data.current_level])
 	current_level = level.instance()
 	nav.add_child(current_level)
+
 
 func setup_tanks() -> void:
 	var plr_id = 1
 	player_tanks = []
 	cpu_tanks = []
 	
-	for i in range (0, game_data.no_of_players):
+	for i in range(0, game_data.no_of_players):
 		var player = game_data.PlayerTank.instance()
 		player.my_id = plr_id
 		player.position = current_level.start_positions[plr_id - 1]
