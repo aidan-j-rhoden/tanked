@@ -28,7 +28,7 @@ func _on_MultiPlayerButton_pressed():
 	game_data.game_mode = game_data.game_modes.MULTIPLAYER
 	game_data.no_of_players = 2
 	game_data.no_of_enemies = 2
-	scene_changer.change_scene("res://screens/match_options_screen.tscn", 0, false)
+	scene_changer.change_scene("res://screens/online_or_local.tscn", 0, false)
 
 
 func _on_QuitGameButton_pressed():
