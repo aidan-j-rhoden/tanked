@@ -2,7 +2,7 @@ extends Control
 
 
 # Declare member variables here. Examples:
-onready var online_button: Button = $VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/Online
+#onready var online_button: Button = $VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/Online
 onready var local_button: Button = $VBoxContainer/CenterContainer/VBoxContainer3/VBoxContainer_Buttons/Local
 
 
@@ -12,7 +12,7 @@ func _ready():
 	audio_player.move.stop()
 
 func _on_Online_pressed():
-	pass # Replace with function body.
+	scene_changer.change_scene("res://screens/online_options.tscn", 0, false)
 
 
 func _on_Local_pressed():
