@@ -41,17 +41,19 @@ var difficulty_params: Dictionary = {
 
 var is_line_to_target: bool = false
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_physics_process(true)
 	set_difficulty(game_data.get_difficulty())
 
-# Set target to player
-func set_goal(new_goal) -> void:
+
+func set_goal(new_goal) -> void: # Set target to player
 	goal = new_goal.position
 	target = new_goal
 	if (nav):
 		update_path()
+
 
 func set_difficulty(diff_level) -> void:
 	ray_gun.set_cast_to(Vector2(difficulty_params[diff_level][0], 0))
@@ -60,27 +62,29 @@ func set_difficulty(diff_level) -> void:
 	invulnerability_timer.wait_time = difficulty_params[diff_level][3]
 
 
-# Update navigation
-func set_nav(new_nav) -> void:
+func set_nav(new_nav) -> void: # Update navigation
 	nav = new_nav
 	update_path()
 
-# Update path if player position changes
-func update_path() -> void:
+
+func update_path() -> void: # Update path if player position changes
 	path = nav.get_simple_path(position, goal, false)
-	
+
 	if (path.size() == 0):
 		pass
+
 
 # Uncomment if debug drawing is needed.
 #func _process(delta):
 #	update()
+
 
 #func _draw():
 #	if (debug):
 #		draw_line(Vector2(0,0), forward_dir * 50, Color(255,0,0), 3)
 #		draw_line(Vector2(0,0), target_dir * 50, Color(0,255,0), 3)
 #		draw_line(Vector2(0,0), shot_dir * 175, Color(0,0,255), 3)
+
 
 func is_target_in_front() -> bool:
 	if path.size() > 0:
@@ -92,10 +96,12 @@ func is_target_in_front() -> bool:
 			return false
 	return true
 
+
 func get_distance_to_target() -> float:
 	if target != null:
 		return position.distance_to(target.position)
 	return 0.0
+
 
 func get_angle_to_target_node() -> float:
 	if target != null:
@@ -103,6 +109,7 @@ func get_angle_to_target_node() -> float:
 		var angle_between = Vector2.RIGHT.angle_to(target_dir) * (180/PI)
 		return angle_between
 	return 0.0
+
 
 func aim():
 	if target != null:
@@ -112,6 +119,7 @@ func aim():
 		if result != null:
 			if result.collider != null and result.collider == target:
 				is_line_to_target = true
+
 
 func is_target_directly_behind() -> bool:
 	if path.size() > 0:
@@ -123,11 +131,13 @@ func is_target_directly_behind() -> bool:
 			return false
 	return false
 
+
 func is_front_clear() -> bool:
 	if ray_front_right.is_colliding() or ray_front_left.is_colliding() or ray_front_right2.is_colliding() or ray_front_left2.is_colliding():
 		return false
 	else:
 		return true
+
 
 func get_angle_to_target() -> float:
 	if path.size() > 0:
@@ -136,6 +146,7 @@ func get_angle_to_target() -> float:
 		return angle_between
 	else:
 		return 0.0
+
 
 func get_target_direction() -> int:
 	if path.size() > 0:
@@ -150,6 +161,7 @@ func get_target_direction() -> int:
 	else:
 		return 0
 
+
 func get_left_raycast_length() -> float:
 	var ray_total = 0
 	var ray_length = 50
@@ -158,7 +170,7 @@ func get_left_raycast_length() -> float:
 		ray_total += ray_length
 	else:
 		ray_total += position.distance_to(ray_left_front_turn.get_collision_point())
-	
+
 	if not ray_front_left.is_colliding():
 		ray_total += ray_length
 	else:
@@ -170,6 +182,7 @@ func get_left_raycast_length() -> float:
 		ray_total += position.distance_to(ray_front_left2.get_collision_point())
 
 	return ray_total
+
 
 func get_right_raycast_length() -> float:
 	var ray_total = 0
@@ -189,8 +202,9 @@ func get_right_raycast_length() -> float:
 		ray_total += ray_length
 	else:
 		ray_total += position.distance_to(ray_front_right2.get_collision_point())
-	
+
 	return ray_total
+
 
 func get_front_raycast_length() -> float:
 	var ray_total = 0
@@ -211,8 +225,8 @@ func get_front_raycast_length() -> float:
 	else:
 		ray_total += position.distance_to(ray_front_3.get_collision_point())
 
-
 	return ray_total
+
 
 func get_available_direction() -> int:
 	if get_left_raycast_length() > get_right_raycast_length():
@@ -224,6 +238,7 @@ func get_available_direction() -> int:
 		return dirs[randi() % dirs.size()]
 	else:
 		return 0
+
 
 func set_turn_direction(target, state, states) -> void:
 	if state == states.drive_forward or state == states.drive_backward:
@@ -245,6 +260,7 @@ func set_turn_direction(target, state, states) -> void:
 		rot_dir = 0
 	else:
 		rot_dir = target
+
 
 func set_movement_velocity(state, states) -> void:
 	match state:
@@ -276,22 +292,26 @@ func set_movement_velocity(state, states) -> void:
 		states.turn_left_while_blocked:
 			decelerate()
 
+
 func accelerate() -> void:
 	speed_fwd += acceleration
 	speed_fwd = clamp(speed_fwd, 0, speed_fwd_max)
 	velocity = Vector2(speed_fwd, 0).rotated(rotation)
+
 
 func decelerate() -> void:
 	speed_fwd -= deceleration
 	speed_fwd = clamp(speed_fwd, 0, speed_fwd)
 	velocity = Vector2(speed_fwd, 0).rotated(rotation)
 
+
 func check_distance_to_waypoint() -> void:
 	if path.size() > 0:
 		var d = position.distance_to(path[0])
 		if d < seek_distance:
 			path.remove(0)
-			
+
+
 func is_colliding_with_tank() -> bool:
 	if ray_front.is_colliding():
 		var body = ray_front.get_collider()
@@ -302,6 +322,7 @@ func is_colliding_with_tank() -> bool:
 	else:
 		return false
 
+
 func is_colliding_with_player() -> bool:
 	if ray_front.is_colliding():
 		var body = ray_front.get_collider()
@@ -311,6 +332,7 @@ func is_colliding_with_player() -> bool:
 			return false
 	else:
 		return false
+
 
 func check_shot_direction() -> void:
 	if ray_gun.is_colliding():

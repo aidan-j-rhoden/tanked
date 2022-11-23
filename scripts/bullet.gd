@@ -7,18 +7,22 @@ var explosion_scene: PackedScene = load("res://scenes/explosion.tscn")
 var explosion#: AnimationPlayer
 onready var audio_explosion: AudioStreamPlayer = $AudioExplosion
 
+
 func _ready():
 	explosion = explosion_scene.instance()
 	explosion.get_node("AnimationPlayer").connect("animation_finished", self, "_on_anim_finished")
 	add_child(explosion)
+
 
 func start(_position, _direction) -> void:
 	position = _position
 	rotation = _direction.angle()
 	velocity = _direction * speed
 
+
 func _process(delta):
 	position += velocity * delta
+
 
 func _on_Area2D_body_entered(body) -> void:
 	velocity = Vector2.ZERO
@@ -30,6 +34,7 @@ func _on_Area2D_body_entered(body) -> void:
 	rotation_degrees = 0
 	audio_explosion.play()
 	explosion.get_node("AnimationPlayer").play("Explosion")
-	
+
+
 func _on_anim_finished(anim_name) -> void:
 	queue_free()

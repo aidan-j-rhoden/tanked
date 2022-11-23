@@ -5,6 +5,7 @@ signal fade_finished()
 
 onready var animation_player = get_node("AnimationPlayer")
 
+
 func change_scene(scene_path, delay = 0.5, fade = true) -> void:
 	yield(get_tree().create_timer(delay), "timeout")
 	if (fade):

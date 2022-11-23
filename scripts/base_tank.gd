@@ -47,20 +47,25 @@ signal shot_bullet(bullet_position, bullet_direction)
 signal health_updated(health)
 signal killed()
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	shot_timer.wait_time = shot_period
 	invulnerability_timer.wait_time = invulnerability_period
 
+
 func _draw():
 	if debug:
 		draw_debug()
 
+
 func draw_debug():
 	draw_line(Vector2(0,0), Vector2(speed_fwd * 60, 0), Color(255,0,0), 3)
 
+
 func get_controls() -> void:
 	pass
+
 
 func _process(delta):
 	offset_shadow()
@@ -68,17 +73,21 @@ func _process(delta):
 	set_track_particles()
 	update()
 
+
 func check_if_alive() -> bool:
 	if health == 0:
 		return false
 	else:
 		return true
 
+
 func offset_shadow() -> void:
 	shadow.position = shadow_offset.rotated(-rotation)
-	
+
+
 func _apply_rotation(delta) -> void:
 	rotation += rot_dir * rot_speed * delta
+
 
 func _apply_movement(delta) -> void:
 	if velocity != Vector2(0,0):
@@ -86,8 +95,10 @@ func _apply_movement(delta) -> void:
 		if collision:
 			velocity = velocity.slide(collision.normal)
 
+
 func aim() -> void:
 	pass
+
 
 func damage(amount) -> void:
 	if invulnerability_timer.is_stopped() and check_if_alive():
@@ -96,13 +107,15 @@ func damage(amount) -> void:
 		effect_animation.play("Damage")
 		effect_animation.queue("Invulnerable")
 
+
 func kill_tank() -> void:
 	speed_fwd = 0
 	velocity = Vector2.ZERO
 	$Particles_Killed.emitting = true
 	$HealthBar.visible = false
 	set_collision_layer_and_mask(true)
-	
+
+
 func set_collision_layer_and_mask(is_dead: bool) -> void:
 	if is_dead:
 		set_collision_layer_bit(5, true)
@@ -115,6 +128,7 @@ func set_collision_layer_and_mask(is_dead: bool) -> void:
 		set_collision_mask_bit(0, true)
 		set_collision_mask_bit(4, true)
 
+
 func _set_health(value) -> void:
 	var previous_health = health
 	health = clamp(value, 0, max_health)
@@ -125,16 +139,19 @@ func _set_health(value) -> void:
 		kill_tank()
 		emit_signal("killed")
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if is_cpu:
 		aim()
 	_apply_movement(delta)
 
+
 func set_engine_pitch():
 	var pitch = clamp(max_pitch * (clamp(speed_fwd / speed_fwd_max, min_percentage, max_percentage)), min_pitch, max_pitch)
 	if audio_engine != null:
 		audio_engine.pitch_scale = pitch
+
 
 func shoot() -> void:
 	can_shoot = false
@@ -143,18 +160,23 @@ func shoot() -> void:
 	shot_timer.start()
 	emit_signal("shot_bullet", bullet_pos, bullet_dir_now)
 	audio_shot.play()
-	
+
+
 func _on_shot_timer_timeout() -> void:
 	can_shoot = true
+
 
 func _on_InvulnerableTimer_timeout():
 	effect_animation.play("Normal")
 
+
 func play_engine_running() -> void:
 	audio_engine.play()
 
+
 func stop_engine_running() -> void:
 	audio_engine.stop()
+
 
 func set_track_particles() -> void:
 	if $Particles_Track1.emitting:
