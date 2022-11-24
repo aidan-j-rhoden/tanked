@@ -118,9 +118,12 @@ func check_distance_to_players(cpu_position) -> Vector2:
 	var selected = 0
 	var shortest = 9999
 	for i in range (0, player_tanks.size()):
-		if cpu_position.distance_to(player_tanks[i].position) < shortest:
-			selected = i
-			shortest = cpu_position.distance_to(player_tanks[i].position)
+		if not player_tanks[i].check_if_alive():
+			pass
+		else:
+			if cpu_position.distance_to(player_tanks[i].position) < shortest:
+				selected = i
+				shortest = cpu_position.distance_to(player_tanks[i].position)
 	return player_tanks[selected]
 
 
