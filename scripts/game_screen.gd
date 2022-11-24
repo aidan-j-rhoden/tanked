@@ -95,9 +95,12 @@ func _process(delta):
 		if game_data.game_mode != game_data.game_modes.CAMPAIGN:
 			scene_changer.change_scene("res://screens/main_menu.tscn", 4, true)
 		else:
-			game_data.current_level += 1
-			if game_data.current_level <= 4:
-				scene_changer.change_scene("res://screens/game_screen.tscn", 4, true)
+			if game_data.current_level <= 5:
+				if player_tanks[0].check_if_alive():
+					game_data.current_level += 1
+					scene_changer.change_scene("res://screens/game_screen.tscn", 4, true)
+				else:
+					scene_changer.change_scene("res://screens/game_screen.tscn", 4, true)
 			else:
 				scene_changer.change_scene("res://screens/win_screen.tscn", 4, true)
 
