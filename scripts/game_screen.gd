@@ -20,7 +20,7 @@ var health_bar: PackedScene = load("res://scenes/health_bar.tscn")
 var current_level: Node2D
 var cpu_tanks: Array = []
 var player_tanks: Array = []
-var dead_tanks = 0
+var dead_tanks: int = 0
 var round_end: bool = false
 var ending: bool = false
 
@@ -93,10 +93,13 @@ func _process(delta):
 	if not ending and round_end:
 		ending = true
 		if game_data.game_mode != game_data.game_modes.CAMPAIGN:
-			scene_changer.change_scene("res://screens/main_menu.tscn", 5, true)
-		#else:
-		#	game_data.current_level += 1
-		#	setup_level()
+			scene_changer.change_scene("res://screens/main_menu.tscn", 4, true)
+		else:
+			game_data.current_level += 1
+			if game_data.current_level <= 4:
+				scene_changer.change_scene("res://screens/game_screen.tscn", 4, true)
+			else:
+				scene_changer.change_scene("res://screens/win_screen.tscn", 4, true)
 
 
 func _on_Timer_timeout() -> void:
